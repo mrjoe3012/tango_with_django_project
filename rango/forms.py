@@ -2,7 +2,7 @@ from django import forms
 from rango.models import Page, Category
 
 class CategoryForm(forms.ModelForm):
-    name = forms.CharField(max_length=128, help_text="Please enter the category name.")
+    name = forms.CharField(max_length=Category.NAME_MAX_LENGTH, help_text="Please enter the category name.")
     views = forms.IntegerField(widget = forms.HiddenInput(),
                                initial=0)
     likes = forms.IntegerField(widget = forms.HiddenInput(),
@@ -29,8 +29,8 @@ class PageForm(forms.ModelForm):
         cleaned_data = self.cleaned_data
         url = cleaned_data.get('url')
         
-        if url and not url.startwith('http://'):
-            url = f'https://{url}'
+        if url and not url.startswith('http://'):
+            url = f'http://{url}'
             cleaned_data['url'] = url
         
         return cleaned_data
